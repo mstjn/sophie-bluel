@@ -280,6 +280,7 @@ footer nav ul {
     font-family: "Syne";
     background-color: white;
   }
+
   .active {
     color: white;
     background-color: #1d6154;
@@ -292,14 +293,13 @@ a {
 a:hover {
   color: #b1663c;
 }
-
+/****** Login ***********/
 #login {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 40px;
-
 
   form {
     display: flex;
@@ -310,36 +310,12 @@ a:hover {
   .form-mail {
     display: flex;
     flex-direction: column;
-	gap: 5px;
+    gap: 5px;
   }
   .form-password {
     display: flex;
     flex-direction: column;
-	gap: 5px;
-  }
-  #email {
-    box-shadow: 0px 4px 14px 0px #00000017;
-    border: none;
-	height: 50px;
-	box-sizing: border-box;
-	font-size: 14px;
-  }
-  #email:focus {
-    outline: none;
-  }
-  #password:focus {
-    outline: none;
-  }
-  #password {
-    box-shadow: 0px 4px 14px 0px #00000017;
-    border: none;
-	height: 50px;
-	font-size: 14px;
-	box-sizing: border-box;
-  }
-  label {
-	font-family: "Work sans";
-	font-size: 14px;
+    gap: 5px;
   }
   button {
     width: 50%;
@@ -360,6 +336,7 @@ a:hover {
     font-size: 14px;
   }
 }
+
 .main-container {
   display: flex;
   flex-direction: column;
@@ -368,7 +345,156 @@ a:hover {
 main {
   flex: 1;
 }
+
 .error {
   display: none;
   color: red;
+  align-self: center;
 }
+/******************************/
+/************************/
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.button-class {
+  width: 40%;
+  border-radius: 60px;
+  font-family: "Syne";
+  color: white;
+  background-color: #1d6154;
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  margin-top: 30px;
+  padding: 10px 0px 10px 0px;
+}
+.form-input {
+  box-shadow: 0px 4px 14px 0px #00000017;
+  border: none;
+  height: 50px;
+  box-sizing: border-box;
+  font-size: 14px;
+  padding-left: 10px;
+}
+.form-input:focus {
+  outline: #1d6154 1px solid;
+}
+.form-label {
+  font-family: "Work sans";
+  font-size: 14px;
+}
+/**************************/
+/********Modal*************/
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+
+  .card-modal {
+    border-radius: 10px;
+    background-color: white;
+    height: 688px;
+    width: 44%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 20px 30px 20px;
+    box-sizing: border-box;
+
+    h2 {
+      font-family: "Work Sans";
+      color: black;
+      font-weight: 400;
+      font-size: 26px;
+      margin-top: 15px;
+      margin-bottom: 30px;
+    }
+  }
+}
+.container-modal {
+  img {
+    width: 100%;
+    max-height: 100%;
+  }
+  .image-wrapper {
+  position: relative; /* permet de placer le ::after par rapport à ce bloc */
+  display: inline-block;
+}
+.image-wrapper::after {
+  content: url("./icons/bin.svg");
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  overflow-y: auto;
+  gap: 10px;
+  height: 100%;
+  width: 70%;
+}
+#form-add {
+  height: 100%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  .background {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    background-color: #e8f1f6;
+    padding: 15px;
+    gap: 10px;
+  }
+  #button-add {
+    background-color: #cbd6dc;
+    color: #306685;
+    font-family: "Work Sans";
+    font-weight: 500;
+    width: 40%;
+    border-radius: 60px;
+    border: none;
+    font-size: 14px;
+    padding: 10px 0px 10px 0px;
+  }
+  p {
+    font-family: "Work Sans";
+    font-weight: 400;
+    font-size: 10px;
+  }
+}
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+hr {
+  border: 1px solid #b3b3b3;
+  width: 100%;
+  box-sizing: border-box;
+}
+select {
+  appearance: none;
+  background: url("./icons/Fleche.svg") no-repeat right 25px center / 15px;
+  color: #6c6c6c;
+}
+/*******************************/
+
+
+

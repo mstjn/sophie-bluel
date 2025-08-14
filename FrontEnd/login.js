@@ -1,4 +1,4 @@
-import { loginFromApi } from "./api.js";
+import { login } from "./api.js";
 
 // déclaration des composants du formulaire
 const form = document.getElementById("form-login");
@@ -11,7 +11,7 @@ const errorMessage = document.querySelector(".error");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   try {
-    await loginFromApi(email.value, password.value);
+    await login(email.value, password.value);
     window.location.replace("index.html");
   } catch (e) {
     toogleError(true);
@@ -30,7 +30,11 @@ password.addEventListener("keyup", () => {
 function toogleError(validation) {
   if (validation) {
     errorMessage.style.display = "block";
+    email.style.border = "red 1px solid"
+    password.style.border = "red 1px solid"
   } else {
     errorMessage.style.display = "none";
+     email.style.border = "none"
+    password.style.border = "none"
   }
 }

@@ -14,7 +14,7 @@ export async function getCategories() {
 }
 
 // fonction asynchrone permettant d'envoyer une requete post a l'api pour se connecter
-export async function loginFromApi(email, password) {
+export async function login(email, password) {
   const donnees = {
     email: email,
     password: password,
