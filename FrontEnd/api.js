@@ -29,11 +29,24 @@ export async function login(email, password) {
   });
 
   if (!response.ok) {
-    throw new Error("Echec de la connnexion")
+    throw new Error("Echec de la connnexion");
   }
-  
+
   const data = await response.json();
 
   localStorage.setItem("token", data.token);
   return data;
+}
+
+export async function deleteWork(id) {
+  const token = localStorage.getItem("token");
+  const response = await fetch(BASE_URL + "works/" + id, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response;
 }
