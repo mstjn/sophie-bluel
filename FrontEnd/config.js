@@ -11,20 +11,22 @@ export const modalAdd = `<div class="card-modal">
         <a class="close-modal"><img src="./assets/icons/close.svg" alt=""></a>
         </div><h2>Ajout photo</h2>
         <form id="form-add" action="">
-          <div class="background">
+          <div class="background" id="background">
             <img src="./assets/icons/photo.svg" alt="">
-            <button id="button-add">+ Ajouter photo</button>
+            <input type="file" id="file" hidden>
+            <label for="background" id="button-add">+ Ajouter une photo</label>
             <p>jpg, png : 4mo max</p>
           </div>
           <div style="display:flex; flex-direction:column; height:100%; gap:15px; margin-top:10px;">
           <label class="form-label" for="title">Titre</label>
-          <input class="form-input" type="text" name="title" id="title">
+          <input class="form-input" type="text" name="title" id="title" required>
         <label class="form-label" for="categorie">Catégorie</label>
           <select class="form-input" name="categorie" id="categorie"></select>
           </div>
+          <p id="error-message" style="color:red; align-self:center;margin-bottom:15px; font-size: 14px;" hidden>Veuillez séléctionner un fichier</p>
           <div style="display:flex; flex-direction:column;align-items:center;">
           <hr>
-          <button class="button-class" style="background-color:#A7A7A7;" type="submit">Valider</button>
+          <button id="valider" class="button-class" style="background-color:#A7A7A7;" type="submit">Valider</button>
           </div>
         </form>
       </div>`

@@ -1,25 +1,24 @@
-import { getWorks, getCategories, deleteWork } from "./api.js";
-import { modalAdd, modalMenu } from "./modal.js";
+import { getWorks, getCategoriesNames, deleteWork, getCategories, addProject } from "./api.js";
+import { modalAdd, modalMenu } from "./config.js";
 
 // récupération des données backend et affichage par défaut
 let data = await getWorks();
-const categories = await getCategories();
+const categoriesNames = await getCategoriesNames();
+const categorie = await getCategories();
 displayProjects(data);
-const authButton = document.getElementById("login");
 const modal = document.querySelector(".modal");
-const edit = document.createElement("a");
 
 // vérifie si un utilisateur est connecté et lance les listeners
 if (isConnected()) {
   displayLoginElements();
 
-  edit.addEventListener("click", () => {
+  document.getElementById("edit").addEventListener("click", () => {
     showModal(true);
   });
   modal.addEventListener("click", () => {
     showModal(false);
   });
-  authButton.addEventListener("click", () => {
+  document.getElementById("login").addEventListener("click", () => {
     if (localStorage.getItem("token")) {
       localStorage.removeItem("token");
     }
@@ -30,13 +29,15 @@ if (isConnected()) {
 
 // affiche les éléments quand il n'y a aucun utilisateur connecté
 function displayLogoutElements() {
-  authButton.textContent = "login";
-  displayFilters(data, categories);
+  document.getElementById("login").textContent = "login";
+  displayFilters(data, categoriesNames);
 }
 
 // affiche les éléments quand il y a un utilisateur connecté
 function displayLoginElements() {
-  authButton.textContent = "logout";
+  const edit = document.createElement("a");
+  edit.id = "edit";
+  document.getElementById("login").textContent = "logout";
   document.getElementById("projet").style.marginBottom = "0";
   const title = document.querySelector(".title");
   edit.href = "#";
@@ -54,29 +55,117 @@ function displayLoginElements() {
 // change de vue sur la modale
 function switchModal(showAdd) {
   modal.innerHTML = showAdd ? modalAdd : modalMenu;
-  document.querySelector(".card-modal")?.addEventListener("click", (e) => e.stopPropagation());
-  document.querySelector(".close-modal")?.addEventListener("click", () => showModal(false));
+  bindCommonModal();
 
   if (showAdd) {
-    document.getElementById("back")?.addEventListener("click", () => switchModal(false));
-    return;
+    initAddView();
+  } else {
+    initMenuView();
   }
+}
 
+// listeners communs
+function bindCommonModal() {
+  document.querySelector(".card-modal")?.addEventListener("click", (e) => e.stopPropagation());
+  document.querySelector(".close-modal")?.addEventListener("click", () => showModal(false));
+}
+
+// configure la vue du formulaire
+function initAddView() {
+  const select      = document.getElementById("categorie");
+  const fileInput   = document.getElementById("file");
+  const background  = document.getElementById("background");
+  const form        = document.getElementById("form-add");
+  const errorMsg    = document.getElementById("error-message");
+  const submitBtn   = document.getElementById("valider");
+
+
+  select.innerHTML = "";
+  categorie.forEach((cat) => {                
+    const opt = document.createElement("option");
+    opt.value = String(cat.id);
+    opt.textContent = cat.name;
+    select.appendChild(opt);
+  });
+
+  background.addEventListener("click", () => fileInput.click());
+
+  let previewUrl = null;
+  fileInput.addEventListener("change", () => {
+    errorMsg.style.display = "none";
+    background.style.border = "none";
+    submitBtn.style.backgroundColor = "#1d6154";
+
+    const file = fileInput.files?.[0];
+    if (!file) return;
+
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    previewUrl = URL.createObjectURL(file);
+
+    const img = document.createElement("img");
+    img.src = previewUrl;
+    Object.assign(img.style, { maxWidth: "100%", maxHeight: "100%", objectFit: "contain" });
+    background.style.padding = "0";
+    background.innerHTML = "";
+    background.appendChild(img);
+  });
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const file = fileInput.files?.[0];
+    if (!file) {
+      errorMsg.style.display = "block";
+      background.style.border = "1px solid red";
+      return;
+    }
+
+    const title = document.getElementById("title").value.trim();
+    const categoryId = Number(select.value);
+
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("title", title);
+    formData.append("category", categoryId);
+
+    submitBtn.disabled = true;
+    try {
+      const response = await addProject(formData);
+      if (!response.ok) {
+        console.error("addProject failed:", response.status, await response.text());
+        alert("Échec de l’upload (" + response.status + ")");
+        return;
+      }
+      data = await getWorks();
+      displayProjects(data);
+      switchModal(false);
+    } catch (err) {
+      console.error("Network/JS error:", err);
+      alert("Erreur réseau");
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  // (5) Retour vers le menu
+  document.getElementById("back")?.addEventListener("click", () => switchModal(false), { once: true });
+}
+
+// configure la vue du menu
+function initMenuView() {
   displayProjectsModal(data);
 
   const container = document.querySelector(".container-modal");
   container?.addEventListener("click", async (e) => {
     const bin = e.target.closest(".delete-img");
-
     if (!bin) return;
 
-    const id = bin.dataset.id;  
-
+    const id = bin.dataset.id;
     try {
-      await deleteWork(id);                    
+      await deleteWork(id);
       document.getElementById(`image-wrapper${id}`)?.remove();
       data = await getWorks();
-      displayProjects(data)
+      displayProjects(data);
     } catch (err) {
       console.error("Suppression échouée :", err);
     }
@@ -84,7 +173,6 @@ function switchModal(showAdd) {
 
   document.getElementById("ajout")?.addEventListener("click", () => switchModal(true));
 }
-
 
 // montre ou non la modale
 async function showModal(show) {
