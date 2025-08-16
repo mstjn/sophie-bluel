@@ -1,5 +1,4 @@
-const BASE_URL = "http://localhost:5678/api/";
-const token = localStorage.getItem("token");
+import { BASE_URL, token } from "./config.js";
 
 // fonction asynchrone permettant la récupération des projets
 export async function getWorks() {
@@ -7,19 +6,11 @@ export async function getWorks() {
   return data;
 }
 
-// fonction asynchrone permettant la récupération des noms des catégories
-export async function getCategoriesNames() {
-  const data = await fetch(BASE_URL + "categories").then((data) => data.json());
-  let dataNames = new Set(data.map((item) => item.name));
-  return dataNames;
-}
-
 // fonction asynchrone permettant la récupération des categories
 export async function getCategories() {
   const data = await fetch(BASE_URL + "categories").then((data) => data.json());
   return data;
 }
-
 
 // fonction asynchrone permettant d'envoyer une requete post a l'api pour se connecter
 export async function login(email, password) {
