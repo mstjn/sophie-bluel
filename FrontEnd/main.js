@@ -87,6 +87,7 @@ export function displayProjects(data) {
     const figure = document.createElement("figure");
     const image = document.createElement("img");
     image.src = project.imageUrl;
+    image.style.maxHeight = "489px"
     image.alt = project.title;
 
     const caption = document.createElement("figcaption");
