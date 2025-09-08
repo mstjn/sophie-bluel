@@ -29,6 +29,10 @@ function displayLoginElements() {
   modifier.textContent = "modifier";
   edit.appendChild(modifier);
   title.appendChild(edit);
+
+  // ajout de la barre d'edit que j'ai oublié
+  document.querySelector(".edit-bar").style.display = "flex"
+  document.querySelector("header").style.marginTop = "100px"
 }
 
 // affiche les filtres

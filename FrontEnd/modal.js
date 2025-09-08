@@ -108,7 +108,8 @@ export function initAddView() {
       }
       setData(await getWorks());
       displayProjects(getData());
-      switchModal(false);
+      switchModal(false)
+      
     } catch (err) {
       console.error("Network/JS error:", err);
       alert("Erreur réseau");
